@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { 
+    background-color: #050505; 
+    overflow: hidden;
+}
+
+/* --- THE BACKGROUND --- */
+.page-wrapper {
+    background: radial-gradient(circle at center, #0a1b2b 0%, #050505 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 123, 167, 0.05) 50%, rgba(0, 123, 167, 0.15) 98%, rgba(0, 123, 167, 0.3) 100%);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.6; 
+    animation: scan-move 8s linear infinite; 
+}
+
+.noise-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
+        linear-gradient(rgba(0, 123, 167, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 123, 167, 0.03) 1px, transparent 1px),
+        url('https://grainy-gradients.vercel.app/noise.svg');
+    background-size: 100% 4px, 40px 40px, 40px 40px, auto;
+    opacity: 0.12; 
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* --- THE CONTAINER (ADJUSTED HEIGHT) --- */
+.main-content {
+    display: flex;
+    width: 90%;
+    max-width: 800px; /* Kept tight */
+    height: 55vh; /* REDUCED from 75vh to make columns less tall */
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.92);
+    border: 1px solid #222;
+    backdrop-filter: blur(4px);
+}
+
+/* --- LEFT: MONOCHROME FRAME --- */
+.left-col {
+    background-color: #ffffff; 
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.image-frame img {
+    max-width: 80%; /* Slightly smaller for more white space */
+    max-height: 80%;
+    filter: grayscale(1);
+    transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.main-content:hover .image-frame img {
+    filter: grayscale(0);
+}
+
+.corner-text {
+    position: absolute;
+    top: 15px; left: 15px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #999;
+}
+
+/* --- RIGHT: THE ORBITRON HUD --- */
+.right-col {
+    flex: 1.2;
+    background: transparent; 
+    padding: 40px; /* REDUCED padding from 60px to bring items closer */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* CHANGED from space-between to center */
+    gap: 30px; /* Added controlled gap to bring all elements closer together */
+    align-items: stretch;
+}
+
+/* BRANDING GROUP: PINNED TO LEFT */
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    color: #fff;
+    font-size: clamp(2rem, 4vh, 3rem); /* Slightly smaller for compactness */
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    line-height: 1;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.top-meta {
+    font-family: 'Space Mono', monospace;
+    color: #636363;
+    font-size: 9px; /* Sharper, smaller HUD text */
+    align-self: flex-start;
+    text-align: left;
+    margin-bottom: -15px; /* Pulls Logo closer to the meta text */
+}
+
+.top-meta span {
+    display: block; 
+    color: #007ba7; 
+    margin-top: 2px;
+    font-weight: bold;
+}
+
+/* NAVIGATION GROUP: PINNED TO RIGHT */
+.nav-links {
+    align-self: flex-end;
+    text-align: right;
+    margin-top: 10px; /* Keeps a small gap between branding and buttons */
+}
+
+.nav-links a {
+    display: block;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    color: #666;
+    font-size: clamp(0.9rem, 2vh, 1.3rem); /* Smaller button size */
+    margin-bottom: 8px; /* TIGHTER spacing between buttons */
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.nav-links a:hover {
+    color: #007ba7; 
+    transform: translateX(-10px);
+    text-shadow: 0 0 15px rgba(0, 123, 167, 0.6);
+}
+
+/* PULSING ACCENT: PINNED TO RIGHT */
+.bottom-accent {
+    width: 40px;
+    height: 3px;
+    background: #007ba7;
+    align-self: flex-end;
+    margin-top: -5px; /* Pulls it closer to the last button */
+    box-shadow: 0 0 20px rgba(0, 123, 167, 0.5);
+    animation: breathe 3s ease-in-out infinite;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes breathe {
+    0%, 100% { opacity: 0.4; transform: scaleX(0.8); }
+    50% { opacity: 1; transform: scaleX(1.1); box-shadow: 0 0 30px rgba(0, 123, 167, 0.8); }
+}
+
+@keyframes scan-move {
+    0% { top: -120px; }
+    100% { top: 100vh; }
+}
+
+/* --- MOBILE --- */
+@media (max-width: 768px) {
+    .main-content { flex-direction: column; height: auto; }
+    .left-col, .right-col { height: auto; padding: 40px 20px; }
+    .nav-links, .bottom-accent, .logo, .top-meta { align-self: flex-start; text-align: left; }
+    .top-meta { margin-bottom: 5px; }
+}
